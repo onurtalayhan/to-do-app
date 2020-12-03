@@ -2,12 +2,10 @@ const form = document.querySelector('form');
 const input = document.querySelector('#txtTaskName');
 const btnDeleteAll = document.querySelector('#btnDeleteAll');
 const taskList = document.querySelector('#task-list');
-const items = ['item 1', 'item 2', 'item 3', 'item 4'];
-
-loadItems();
-
+const firstCardBody = document.querySelector('.card-body');
+const secondCardBody = document.querySelector('.card-body')[1];
+//const txtTaskName = document.querySelector('#txtTaskName')
 addEventListener();
-
 function addEventListener() {
     //submit
     form.addEventListener('submit', addNewItem);
@@ -16,11 +14,93 @@ function addEventListener() {
     //delete all
     btnDeleteAll.addEventListener('click', deleteAll);
 }
+function addNewItem(e) {
+    const newItem = input.value.trim();
+   
+      if (newItem === "") {
+ 
+        showAlert('danger', 'Please add a item');
+ 
+    }else {
+       addItemToUI(newItem);
+       addToDoStorage(newItem);
+       showAlert('success', 'Successfully added')
+    }
+     
+    e.preventDefault();
+}
+function getToDosFromStorage(){
+    let items;
+    if(localStorage.getItem('items')===null){
+        items =[];
+    }else {
+        items = JSON.parse(localStorage.getItem('items'));
+    }
+    return items;
+}
+function addToDoStorage(newItem){
+   let items = getToDosFromStorage();
+   items.push(newItem);
+   localStorage.setItem('items',JSON.stringify(items));
+
+}
+function showAlert(type, message){
+ const alert = document.createElement("div");
+
+ alert.className = `alert alert-${type}`;
+ 
+ alert.textContent = message;
+ 
+ firstCardBody.appendChild(alert);
+ 
+ setTimeout(function(){
+     alert.remove();
+ },1000);
+}
+function addItemToUI(newItem){
+
+ const li = document.createElement('li');
+ const a = document.createElement('a');
+ a.href ="#";
+ a.className = "delete-item";
+ a.classList = 'delete-item float-right';
+ a.innerHTML = '<i class="fas fa-times"></i>';
+ li.className = 'list-group-item list-group-item-secondary';
+ li.appendChild(document.createTextNode(newItem));
+ li.appendChild(a);
+ taskList.appendChild(li);
+ input.value="";
+}
+
+/* 
+let items;
+
+loadItems();
+
+
 
 function loadItems(){
+    items = getItemFromLS();
     items.forEach(function(item){
         createItem(item);
-    })
+    });
+}
+
+// get items from local storage
+function getItemFromLS(){
+    if(localStorage.getItem('items')===null){
+        items=[];
+    }else{
+        items = JSON.parse(localStorage.getItem('items'));
+    }
+    return items;
+}
+
+function setItemToLS(text){
+  
+    items = getItemsFromLS();
+    items.push(text);
+    localStorage.setItem('items', JSON.stringify(items));
 }
 function createItem(text){
     //create li
@@ -41,18 +121,6 @@ function createItem(text){
     taskList.appendChild(li);
 }
 
-function addNewItem(e) {
-
-    if (input.value == 0) {
-        alert('add new item');
-    }
-    
-    // create item
-    createItem(input.value);
-    //clear input
-    // input.value = '';
-    e.preventDefault();
-}
 
 function deleteItem(e) {
     
@@ -73,4 +141,4 @@ function deleteAll(e) {
         }
     });
     e.preventDefault();
-}
+} */
