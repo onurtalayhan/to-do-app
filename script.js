@@ -3,14 +3,26 @@ const input = document.querySelector('#txtTaskName');
 const btnDeleteAll = document.querySelector('#btnDeleteAll');
 const taskList = document.querySelector('#task-list');
 const firstCardBody = document.querySelector('.card-body');
+const filter = document.querySelector('#filter');
 
 addEventListener();
 function addEventListener() {
-    //submit
+    
     form.addEventListener('submit', addNewItem);
     document.addEventListener('DOMContentLoaded', loadAllItemsToUI);
     taskList.addEventListener('click',deleteItem);
+    input.addEventListener('keyup',filterItems);
     
+}
+function filterItems(e){
+    const filterValue = e.target.value.toLowerCase();
+    const listItems = document.querySelectorAll(".list-group-item");
+    console.log(listItems)
+   /*  listItems.forEach(function(listItem){
+        const text = listItem.textContent.toLowerCase();
+        console.log(text);
+    })
+ */
 }
 function deleteItem(e){
     
@@ -23,9 +35,13 @@ function deleteItem(e){
 function deleteItemFromStorage(deleteItem){
   
     items = getToDosFromStorage();
+    
     items.forEach(function(item,index){
-        if(item === deleteItem){
+  
+        if(item == deleteItem){
             items.splice(index,1);
+            localStorage.setItem('items', JSON.stringify(items));
+           
         }
     });
 }
