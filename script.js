@@ -9,11 +9,19 @@ addEventListener();
 function addEventListener() {
     //submit
     form.addEventListener('submit', addNewItem);
+    document.addEventListener('DOMContentLoaded', loadAllItemsToUI);
     //delete
-    taskList.addEventListener('click', deleteItem);
+   // taskList.addEventListener('click', deleteItem);
     //delete all
-    btnDeleteAll.addEventListener('click', deleteAll);
+   // btnDeleteAll.addEventListener('click', deleteAll);
 }
+function loadAllItemsToUI(){
+    let items = getToDosFromStorage();
+    items.forEach(function(item){
+        addItemToUI(item);
+    })
+}
+
 function addNewItem(e) {
     const newItem = input.value.trim();
    
