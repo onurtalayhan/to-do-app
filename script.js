@@ -3,17 +3,31 @@ const input = document.querySelector('#txtTaskName');
 const btnDeleteAll = document.querySelector('#btnDeleteAll');
 const taskList = document.querySelector('#task-list');
 const firstCardBody = document.querySelector('.card-body');
-const secondCardBody = document.querySelector('.card-body')[1];
-//const txtTaskName = document.querySelector('#txtTaskName')
+
 addEventListener();
 function addEventListener() {
     //submit
     form.addEventListener('submit', addNewItem);
     document.addEventListener('DOMContentLoaded', loadAllItemsToUI);
-    //delete
-   // taskList.addEventListener('click', deleteItem);
-    //delete all
-   // btnDeleteAll.addEventListener('click', deleteAll);
+    taskList.addEventListener('click',deleteItem);
+    
+}
+function deleteItem(e){
+    
+    if(e.target.className === 'fas fa-times'){
+        e.target.parentElement.parentElement.remove();
+        deleteItemFromStorage(e.target.parentElement.parentElement.textContent);
+        showAlert('success','Successful');
+    }
+}
+function deleteItemFromStorage(deleteItem){
+  
+    items = getToDosFromStorage();
+    items.forEach(function(item,index){
+        if(item === deleteItem){
+            items.splice(index,1);
+        }
+    });
 }
 function loadAllItemsToUI(){
     let items = getToDosFromStorage();
@@ -80,73 +94,3 @@ function addItemToUI(newItem){
  input.value="";
 }
 
-/* 
-let items;
-
-loadItems();
-
-
-
-function loadItems(){
-    items = getItemFromLS();
-    items.forEach(function(item){
-        createItem(item);
-    });
-}
-
-// get items from local storage
-function getItemFromLS(){
-    if(localStorage.getItem('items')===null){
-        items=[];
-    }else{
-        items = JSON.parse(localStorage.getItem('items'));
-    }
-    return items;
-}
-
-function setItemToLS(text){
-  
-    items = getItemsFromLS();
-    items.push(text);
-    localStorage.setItem('items', JSON.stringify(items));
-}
-function createItem(text){
-    //create li
-    const li = document.createElement('li');
-    li.className = 'list-group-item list-group-item-secondary';
-    li.appendChild(document.createTextNode(text));
-
-    // create a
-    const a = document.createElement('a');
-    a.classList = 'delete-item float-right';
-    a.setAttribute('href', '#');
-    a.innerHTML = '<i class="fas fa-times"></i>';
-
-    //add a to li
-    li.appendChild(a);
-
-    //add li to ul
-    taskList.appendChild(li);
-}
-
-
-function deleteItem(e) {
-    
-        if (e.target.className === 'fas fa-times') {
-            if (confirm('Are you sure?')) {
-            e.target.parentElement.parentElement.remove();
-        }
-        e.preventDefault();
-    }
-}
-// check 
-function deleteAll(e) {
-    taskList.childNodes.forEach(function (item) {
-        if (confirm('Are you sure?')) {
-            if (item.nodeType === 1) {
-                item.remove();
-            }
-        }
-    });
-    e.preventDefault();
-} */
