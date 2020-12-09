@@ -12,26 +12,31 @@ function addEventListener() {
     document.addEventListener('DOMContentLoaded', loadAllItemsToUI);
     taskList.addEventListener('click',deleteItem);
     input.addEventListener('keyup',filterItems);
+    btnDeleteAll.addEventListener('click',clearAllItems);
     
+}
+function clearAllItems(e){
+    if(confirm('Are you sure wnat to delete all?')){
+        while(taskList.firstElementChild != null){
+            taskList.removeChild(taskList.firstElementChild);
+        }
+        localStorage.removeItem('items');
+    }
 }
 function filterItems(e){
     const filterValue = e.target.value.toLowerCase();
     const listItems = document.querySelectorAll('.list-group-item');
+    
     
      listItems.forEach(function(listItem){
         const text = listItem.textContent.toLowerCase();
         if (text.indexOf(filterValue) === -1){
         listItem.setAttribute('style', 'display:None !important' );
         }else{
+            
             listItem.setAttribute('style','display: Block');
+            
         }
-       
-
-       /*  if (text.indexof(filterValue)=== -1){
-            listItem.setAttribute('display','style: None');
-        }else{
-            listItem.setAttribute('display','style: Block');
-        } */
     })
  
 }
